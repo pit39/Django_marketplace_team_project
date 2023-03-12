@@ -1,0 +1,162 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %} {% block main%}
+<div class="Middle Middle_top">
+  <div class="Middle-top">
+    <div class="wrap">
+      <div class="Middle-header">
+        <h1 class="Middle-title">{% translate 'детали заказа' %}</h1>
+        <ul class="breadcrumbs Middle-breadcrumbs">
+         <li class="breadcrumbs-item">
+           <a href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+         </li>
+         <li class="breadcrumbs-item breadcrumbs-item_current">
+            <span>{% translate 'детали заказа' %}</span>
+         </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="Section Section_column Section_columnLeft">
+    <div class="wrap">
+      <div class="Section-column">
+        <div class="Section-columnSection">
+          <header class="Section-header">
+            <strong class="Section-title">{% translate 'Меню' %}</strong>
+          </header>
+          <div class="Section-columnContent sticky">
+            <div class="NavigateProfile">
+              <ul class="menu menu_vt">
+                <li class="menu-item">
+                    <a class="menu-link" href="{% url 'account' %}">{% translate 'Личный кабинет' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'profile' %}">{% translate 'Профиль' %}</a>
+                  </li>
+                  <li class="menu-item_ACTIVE menu-item">
+                    <a class="menu-link" href="{% url 'history-order' %}">{% translate 'История заказов' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'users:view_history' %}">{% translate 'Просмотренные продукты' %}</a>
+                  </li>
+                  <li class="menu-item menu-item">
+                      <a class="menu-link" href="{% url 'seller-room' %}">{% translate 'Комната продавца' %}</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="Section-content">
+        <header class="Section-header margin">
+          <h2 class="Section-title">История заказа №{{ goods_in_order.pk }}</h2>
+        </header>
+        <div class="Orders"></div>
+        <div class="Order">
+          <div class="Order-infoBlock">
+            <div class="Order-personal">
+              <div class="row">
+                <div class="row-block" style="margin-bottom: 30px">
+                  <div class="Order-info Order-info_date">
+                    <div class="Order-infoType">Дата заказа:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.ordered}}</div>
+                  </div>
+                  <div class="Order-info">
+                    <div class="Order-infoType">Покупатель:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.first_second_names}}</div>
+                  </div>
+                  <div class="Order-info">
+                    <div class="Order-infoType">Телефон:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.phone }}</div>
+                  </div>
+                  <div class="Order-info">
+                    <div class="Order-infoType">E-mail:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.email}}</div>
+                  </div>
+                </div>
+                <div class="row-block">
+                  <div class="Order-info Order-info_delivery">
+                    <div class="Order-infoType">Тип доставки:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.delivery}}</div>
+                  </div>
+                  <div class="Order-info">
+                    <div class="Order-infoType">Город:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.city }}</div>
+                  </div>
+                  <div class="Order-info">
+                    <div class="Order-infoType">Адрес:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.address}}</div>
+                  </div>
+                  <div class="Order-info Order-info_pay">
+                    <div class="Order-infoType">Оплата:</div>
+                    <div class="Order-infoContent">{{ goods_in_order.get_payment_display}}</div>
+                  </div>
+                  <div class="Order-info Order-info_status">
+                    <div class="Order-infoType">Статус:</div>
+                      {% if goods_in_order.paid %}
+                    <div class="Order-infoContent">Оплачен</div>
+                      {% else %}
+                    <div class="Order-infoContent">Не оплачен</div>
+                      {% endif %}
+                  </div>
+                    {% if goods_in_order.payment_info.status == 'f' or  goods_in_order.payment_info.error_message %}
+                        <div class="Order-info Order-info_error">
+                            <div class="Order-infoType">{% translate 'Оплата не прошла:' %}</div>
+                            <div class="Order-infoContent">
+                                {{ goods_in_order.payment_info.error_message.message }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="Cart Cart_order">
+            {% for good in goods_in_order.order_goods.all %}
+              <div class="Cart-product">
+                <div class="Cart-block Cart-block_row">
+                  <div class="Cart-block Cart-block_pict">
+                    <a class="Cart-pict" href="#"
+                      ><img class="Cart-img" src="{{ good.good_in_cart.images.all.0.file.url }}" alt="фото товара"
+                    /></a>
+                  </div>
+                  <div class="Cart-block Cart-block_info">
+                    <a class="Cart-title" href="{{ good.good_in_cart.get_absolute_url }}">{{ good.good_in_cart.name }}</a>
+                    <div class="Cart-desc">{{ good.good_in_cart.description}}</div>
+                  </div>
+                  <div class="Cart-block Cart-block_price">
+                    <div class="Cart-price_old">{{ good.old_price }}$</div>
+                    <div class="Cart-price">{{ good.price }}$</div>
+                  </div>
+                </div>
+                <div class="Cart-block Cart-block_row">
+                  <div class="Cart-block Cart-block_seller">
+                    <div></div>
+                  </div>
+                  <div class="Cart-block Cart-block_amount">{{ good.amount }} шт.</div>
+                </div>
+              </div>
+              {% endfor %}
+              <div class="Cart-total">
+                <div class="Cart-block Cart-block_total">
+                  <strong class="Cart-title">{% translate 'Итого:' %}
+                      <span class="Cart-price">{{ goods_in_order.all_goods_price_disc_delivery }}$</span>
+                  </strong>
+                </div>
+                  {% if goods_in_order.paid == False %}
+                    <div class="Cart-block">
+                        {% if goods_in_order.payment_info.status == 'w'%}
+                            <h3>{% translate 'Ожидает оплаты' %}</h3>
+                        {% else %}
+                            <a class="btn btn_primary btn_lg" type="submit" href="{% url 'payment_order' order_pk=goods_in_order.pk %}">
+                                {% translate 'Оплатить' %}
+                            </a>
+                        {% endif %}
+                    </div>
+                  {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block main %}
+
+  <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">{% trans 'Корзина' %}</h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item"><a href="{% url 'main_page' %}">home</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span>{% trans 'Корзина' %}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section">
+      <div class="wrap">
+        {% if cart %}
+          <form class="form Cart" action="#" method="post">
+            {% for item in cart %}
+              {% with product=item.shop_product.product shop=item.shop_product.store shop_product=item.shop_product %}
+              <div class="Cart-product">
+                <div class="Cart-block Cart-block_row">
+                  <div class="Cart-block Cart-block_pict">
+                    <a class="Cart-pict" href="{% url 'product' product.slug %}">
+                      <img class="Cart-img" src="{{ product.images.all.0 }}" alt="card.jpg"/>
+                    </a>
+                  </div>
+                  <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{ product.name }}</a>
+                    <div class="Cart-desc">{{ product.description }}
+                    </div>
+                  </div>
+                  <div class="Cart-block Cart-block_price">
+                    {% if shop_product.old_price %}
+                      <div class="Cart-price Cart-price_old">{{ shop_product.old_price }}</div>
+                    {% endif %}
+                    <div class="Cart-price">{{ shop_product.price }}
+                    </div>
+                  </div>
+                </div>
+                <div class="Cart-block Cart-block_row">
+                  <div class="Cart-block Cart-block_seller">
+                    <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
+                  <div class="form-select">{{ shop.name }}</div>
+                  </div>
+                  <div class="Cart-block Cart-block_amount">
+                    <div class="Cart-amount">
+                      <div class="Amount">
+                          <a href="{% url 'cart:change' shop_product.id '-1' %}" class="Amount-remove-cart" type="button"></a>
+                          <span class="Amount-input form-input">{{ item.quantity }}</span>
+                          <a href="{% url 'cart:change' shop_product.id '+1' %}" class="Amount-add-cart" type="button"></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="Cart-block Cart-block_delete">
+                    <a class="Cart-delete" href="{% url 'cart:remove' product.id %}">
+                      <img src="{% static 'assets/img/icons/card/delete.svg' %}" alt="delete.svg"/>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endwith %}
+            {% endfor %}
+            <div class="Cart-total">
+              <div class="Cart-block Cart-block_total">
+                <strong class="Cart-title">{% trans 'Итого' %}:</strong>
+                <span class="Cart-price">{{ cart.get_total_price }}</span>
+                {% if user.cart.discount %}
+                  <span class="Cart-price_old">{{ cart.total_price_old }}</span>
+                {% endif %}
+              </div>
+              <div class="Cart-block"><a class="btn btn_success btn_lg" href="{% url 'order-step-one' %}">{% trans 'Оформить заказ' %}</a>
+              </div>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

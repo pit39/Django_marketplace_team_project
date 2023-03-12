@@ -1,0 +1,100 @@
+{% load static %}
+{% load i18n %}
+<footer class="Footer">
+  <div class="wrap">
+    <div class="row Footer-main">
+      <div class="row-block">
+        <a class="logo Footer-logo" href="index.html">
+          <img class="logo-image" src="{% static 'assets/img/logo_footer.png' %}" alt="logo_footer.png"/>
+        </a>
+        <p>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincid  unt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
+        </p>
+
+        {% block socials %}
+          {% with css_class='Footer-menuSoc' %}
+            {% include 'inc/blocks/socials.html' %}
+          {% endwith %}
+        {% endblock %}
+
+      </div>
+
+      <div class="row-block">
+        <strong class="Footer-title">{% translate 'полезнаые ссылки' %}</strong>
+        <ul class="menu menu_vt Footer-menu">
+          {% for category in categories %}
+          <li class="menu-item">
+            <a class="menu-link" href="{{ category.get_absolute_url }}">{{ category }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% if request.user.is_authenticated %}
+      <div class="row-block">
+        <strong class="Footer-title">{% translate 'Мой аккаунт' %}</strong>
+        <ul class="menu menu_vt Footer-menu">
+          <li class="menu-item">
+            <a class="menu-link" href="{% url 'history-order' %}">{% translate 'История заказов' %}</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="{% url 'users:view_history' %}">{% translate 'Просмотренные продукты' %}</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="#">{% translate 'Комната продавцов' %}</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="{% url 'import_data' %}">{% translate 'Импортирование данных' %}</a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+      <div class="row-block">
+        <strong class="Footer-title">{% translate 'Контакты' %}</strong>
+        <p>
+          Phone: 8.800.200.600<br>Email: Support@ninzio.com<br>Skype: techno<br>Address: New York, north<br>Avenue 26/7<br>0057
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="Footer-copy">
+    <div class="wrap">
+      <div class="row row_space">
+        <div class="row-block">
+          © Copyright&#32;<a href="#">Megano Store.</a>&#32;{% translate 'Все права защищены' %}.
+        </div>
+        <div class="row-block"><span>{% translate 'Система оплаты' %}</span>
+          <div class="Footer-payments">
+            <div>
+              <img src="{% static 'assets/img/payments/visa.png' %}" alt="visa.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/mastercard.png' %}" alt="mastercard.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/paypal.png' %}" alt="paypal.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/american.png' %}" alt="american.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/electron.png' %}" alt="electron.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/maestro.png' %}" alt="maestro.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/delta.png' %}" alt="delta.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/e.png' %}" alt="e.png"/>
+            </div>
+            <div>
+              <img src="{% static 'assets/img/payments/dk.png' %}" alt="dk.png"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

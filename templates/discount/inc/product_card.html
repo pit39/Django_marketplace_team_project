@@ -1,0 +1,37 @@
+{% load static %}
+{% load i18n %}
+
+<div class="Card{% if forloop.counter > 18 %} hide_1450 {% endif %}">
+  <a class="Card-picture" href="{% url 'product' product.slug %}">
+    <img src="{{ product.images.all.0.file.url }}" alt="card.jpg"/>
+  </a>
+  <div class="Card-content">
+    <strong class="Card-title"><a
+        href="{% url 'product' product.slug %}">{{ product.name }}</a></strong>
+    <div class="Card-description">
+      <div class="Card-cost">
+        {% if product.old_price %}
+          <span class="Card-priceOld">{{ product.old_price }}</span>
+        {% endif %}
+        <span class="Card-price">{{ product.price }}</span>
+      </div>
+      <div class="Card-category">{{ product.category }}
+      </div>
+      <div class="Card-hover">
+        <a class="Card-btn" href="{# {% url 'product' product.slug product.id %} #}">
+          <img src="{% static 'assets/img/icons/card/bookmark.svg' %}" alt="bookmark.svg"/>
+        </a>
+        <a class="Card-btn" href="{# {% url 'cart_add' product.id %} #}">
+          <img src="{% static 'assets/img/icons/card/cart.svg' %}" alt="cart.svg"/>
+        </a>
+        <a class="Card-btn" href="{# {% url 'compare' product.id %} #}">
+          <img src="{% static 'assets/img/icons/card/change.svg' %}" alt="change.svg"/>
+        </a>
+      </div>
+    </div>
+  </div>
+{#  {% if discount.type == 'percent' %}#}
+{#    <div class="Card-sale">-{{ discount.value }}%#}
+{#    </div>#}
+{#  {% endif %}#}
+</div>

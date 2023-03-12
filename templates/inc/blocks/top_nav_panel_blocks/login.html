@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<nav class="row-block">
+  <div class="row ControlPanel-rowSplit">
+    <div class="row-block">
+        {% if user.is_authenticated %}
+          <a style="margin-right: 20px" class="ControlPanel-title" href="{% url 'account' %}">{% trans 'Личный кабинет' %}</a>
+            <a class="ControlPanel-title" href="{% url 'users:logout' %}">{% trans 'Выйти из системы' %}</a>
+        {% else %}
+            <a class="ControlPanel-title" href="{% url 'users:login' %}">{% trans 'Вход/Регистрация' %}</a>
+        {% endif %}
+    </div>
+  </div>
+</nav>

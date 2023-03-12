@@ -1,0 +1,110 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %} {% block main%}
+<div class="Middle Middle_top">
+   <div class="Middle-top">
+      <div class="wrap">
+         <div class="Middle-header">
+            <h1 class="Middle-title">{% translate 'История заказов' %}</h1>
+            <ul class="breadcrumbs Middle-breadcrumbs">
+                <li class="breadcrumbs-item">
+                  <a href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+                </li>
+               <li class="breadcrumbs-item breadcrumbs-item_current">
+                  <span>{% translate 'История заказов' %}</span>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="Section Section_column Section_columnLeft">
+      <div class="wrap">
+         <div class="Section-column">
+            <div class="Section-columnSection">
+               <header class="Section-header">
+                  <strong class="Section-title">{% translate 'Меню' %}</strong>
+               </header>
+               <div class="Section-columnContent sticky">
+                  <div class="NavigateProfile">
+                     <ul class="menu menu_vt">
+                        <li class="menu-item">
+                          <a class="menu-link" href="{% url 'account' %}">{% translate 'Личный кабинет' %}</a>
+                        </li>
+                        <li class="menu-item">
+                           <a class="menu-link" href="{% url 'profile' %}">{% translate 'Профиль' %}</a>
+                        </li>
+                        <li class="menu-item_ACTIVE">
+                           <a class="menu-link" href="{% url 'history-order' %}">{% translate 'История заказов' %}</a>
+                        </li>
+                        <li class="menu-item">
+                           <a class="menu-link" href="{% url 'users:view_history' %}">{% translate 'Просмотренные продукты' %}</a>
+                        </li>
+                        <li class="menu-item menu-item">
+                           <a class="menu-link" href="{% url 'seller-room' %}">{% translate 'Комната продавца' %}</a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="Section-content">
+            <header class="Section-header margin">
+               <h2 class="Section-title">{% translate 'Ваша история заказов' %}</h2>
+            </header>
+            <div class="Orders">
+                {% if orders %}
+                    {% for order in orders %}
+                       <div class="Order Order_anons">
+                          <div class="Order-personal">
+                             <div class="row">
+                                <div class="row-block">
+                                       <a class="Order-title" href="{{ order.get_absolute_url }}">
+                                   Заказ&#32;
+                                   <span class="Order-numberOrder">№{{ order.pk }}</span>
+                                   &#32;от&#32;<span class="Order-dateOrder">{{ order.ordered}}</span>
+                                   </a>
+                                </div>
+                                <div class="row-block">
+                                   <div class="Order-info Order-info_delivery">
+                                      <div class="Order-infoType">Тип доставки:</div>
+                                      <div class="Order-infoContent">{{ order.delivery}}</div>
+                                   </div>
+                                   <div class="Order-info Order-info_pay">
+                                      <div class="Order-infoType">Оплата:</div>
+                                      <div class="Order-infoContent">{{ order.get_payment_display}}</div>
+                                   </div>
+                                   <div class="Order-info">
+                                      <div class="Order-infoType">Общая стоимость:</div>
+                                      <div class="Order-infoContent">
+                                         <span class="Order-price">{{ order.all_goods_price_disc_delivery}}</span
+                                            ><span class="Order-price_old">{{ order.all_goods_price_disc_delivery}}</span>
+                                      </div>
+                                   </div>
+                                   <div class="Order-info Order-info_status">
+                                      <div class="Order-infoType">Статус:</div>
+                                      {% if order.paid %}
+                                      <div class="Order-infoContent">Оплачен</div>
+                                      {% else %}
+                                      <div class="Order-infoContent">Не оплачен</div>
+                                      {% endif %}
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    {% endfor %}
+                       {% else %}
+                       <div class="Order Order_anons">
+                          <div class="Order-personal">
+                             <div class="row">
+                                <div class="row-block">
+                                   <p class="Order-title">Вы ещё ничего не заказывали</p>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

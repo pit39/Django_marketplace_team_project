@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load range %}
+{% load get_value %}
+
+{% block main %}
+<div class="Middle Middle_top">
+
+  <div class="Middle-top">
+    <div class="wrap">
+      <div class="Middle-header">
+        <h1 class="Middle-title">
+          {% translate 'Сравнение товаров' %}
+        </h1>
+        <ul class="breadcrumbs Middle-breadcrumbs">
+          <li class="breadcrumbs-item">
+            <a href="index.html">home</a>
+          </li>
+          <li class="breadcrumbs-item breadcrumbs-item_current">
+            <span>{% translate 'Сравнение товаров' %}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="Section">
+    <div class="wrap">
+      <article class="Article">
+        <p>
+          {% translate 'Разнообразный и богатый опыт постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании системы обучения кадров, соответствует насущным потребностям. Идейные соображения высшего порядка, а также консультация с широким активом требуют определения и уточнения соответствующий условий активизации.' %}
+        </p>
+      </article>
+      <div class="Compare">
+
+        <div class="Compare-row">
+          <div class="Compare-title Compare-title_blank"></div>
+          <div class="Compare-products">
+            {% for product in products %}
+              {% include 'compare/inc/product.html' %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="Compare-row">
+
+          <div class="Compare-title Compare-title_blank"></div>
+          <div class="Compare-products">
+
+            {% for product in products %}
+              <div class="Compare-product">
+
+              <div class="Compare-nameProduct">
+                {{ product.name }}
+              </div>
+              <div class="Compare-feature">
+                <a class="Compare-btn" href="{% url 'cart:random_add' product.pk %}">
+                  <img src="{% static 'assets/img/icons/card/cart.svg' %}" alt="cart.svg"/>
+                </a>
+                <a class="Compare-btn" href="{% url 'delete_from_compare' product.pk %}">
+                  <img src="{% static 'assets/img/icons/card/delete.svg' %}" alt="delete.svg"/>
+                </a>
+              </div>
+
+            </div>
+            {% endfor %}
+
+          </div>
+        </div>
+
+        {% block rating %}
+        <div class="Compare-row">
+          <div class="Compare-title">
+            {% translate 'Рейтинг' %}
+          </div>
+          <div class="Compare-products">
+            {% for product in products %}
+              <div class="Compare-product">
+              <div class="Compare-nameProduct">
+                {{ product.name }}
+              </div>
+              <div class="Compare-feature">
+                <div class="Rating">
+                  <div class="Rating-stars">
+                    {% for star in 5|range_number %}
+                      <span class="Rating-star {% if forloop.counter <= product.rating %} Rating-star_view {% endif %}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                        <g>
+                          <g>
+                            <path fill="#ffc000" d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                          </g>
+                        </g>
+                      </svg>
+                    </span>
+                    {% endfor %}
+                  </div>
+                  <div class="Rating-title"></div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endblock %}
+
+        {% block characteristic %}
+          {% for product in products %}
+            {% if forloop.counter <= 1 %}
+              {% for property in product.property.all %}
+              <div class="Compare-row">
+                <div class="Compare-title">
+                  {{ property }}
+                </div>
+                <div class="Compare-products">
+                  {% for product in products %}
+                    <div class="Compare-product">
+                      <div class="Compare-nameProduct">
+                        {{ product.name }}
+                      </div>
+                      <div class="Compare-feature">
+                        {% for productproperty in product.productproperty_set.all %}
+
+                          {% if productproperty.property == property %}
+                            {{ productproperty.value }}
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% endblock %}
+
+        {% block price %}
+          <div class="Compare-row">
+            <div class="Compare-title">
+              {% translate 'Цена' %}
+            </div>
+            <div class="Compare-products">
+              {% for product in products %}
+                <div class="Compare-product">
+                  <div class="Compare-nameProduct">
+                    {{ product.name }}
+                  </div>
+                  <div class="Compare-feature">
+                    <strong class="Compare-priceOld">
+                      {% if product.old_price %}
+                        ${{ product.old_price | get_value }}
+                      {% endif %}
+                    </strong>
+                    <strong class="Compare-price">
+                      {% if product.price %}
+                        {% translate 'от' %} $ {{ product.price }}
+                      {% endif %}
+                    </strong>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endblock %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

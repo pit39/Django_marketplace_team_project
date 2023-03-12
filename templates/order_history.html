@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block main %}
+  <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">{% translate 'История заказов' %}</h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item"><a href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current">
+              <span>{% translate 'История заказов' %}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section Section_column Section_columnLeft">
+      <div class="wrap">
+        <div class="Section-column">
+          <div class="Section-columnSection">
+            <header class="Section-header">
+              <strong class="Section-title">{% translate 'Навигация' %}</strong>
+            </header>
+            <div class="Section-columnContent">
+              <div class="NavigateProfile">
+                <ul class="menu menu_vt">
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'account' %}">{% translate 'Личный кабинет' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'profile' %}">{% translate 'Профиль' %}</a>
+                  </li>
+                  <li class="menu-item_ACTIVE menu-item">
+                    <a class="menu-link" href="{% url 'order_history' %}">{% translate 'История заказов' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'view_history' %}">{% translate 'История просмотра' %}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="Section-content">
+          {% if orders %}
+            <div class="Orders">
+              {% for order in orders %}
+                <div class="Order Order_anons">
+                  <div class="Order-personal">
+                    <div class="row">
+                      <div class="row-block">
+                        <a class="Order-title" href="{% url 'one_order' user.last_order.id %}">
+                          {% translate 'Заказ' %}&#32;<span class="Order-numberOrder">№{{ order.number }}</span>
+                          &#32;от&#32;<span class="Order-dateOrder">{{ order.date }}</span>
+                        </a>
+                      </div>
+                      <div class="row-block">
+                        <div class="Order-info Order-info_delivery">
+                          <div class="Order-infoType">
+                            {% translate 'Тип доставки' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ order.delivery_type }}
+                          </div>
+                        </div>
+                        <div class="Order-info Order-info_pay">
+                          <div class="Order-infoType">
+                            {% translate 'Оплата' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ order.payment_method }}
+                          </div>
+                        </div>
+                        <div class="Order-info">
+                          <div class="Order-infoType">
+                            {% translate 'Общая стоимость' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            <span class="Order-price">{{ order.total_price }}</span>
+                            {% if order.old_price %}
+                              <span class="Order-price_old">{{ order.old_price }}</span>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="Order-info Order-info_status">
+                          <div class="Order-infoType">{% translate 'Статус' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ order.payment_status }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p>{% translate 'У вас пока нет заказов' %}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

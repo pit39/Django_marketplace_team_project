@@ -1,0 +1,25 @@
+{% load i18n %}
+<div class="ControlPanel">
+  <div class="wrap">
+    <div class="row ControlPanel-row">
+      <div class="row-block">
+        <div class="row ControlPanel-rowSplit">
+          <div class="row-block">
+            <a class="ControlPanel-title" href="#">{% translate 'Бесплатная доставка' %}</a>
+          </div>
+          <div class="row-block hide_700">
+            <span class="ControlPanel-title">{% translate 'Подпишись на нас' %}</span>
+            {% block socials %}
+              {% with css_class='ControlPanel-menu' %}
+                {% include 'inc/blocks/socials.html' %}
+              {% endwith %}
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+      {% block login %}
+        {% include 'inc/blocks/top_nav_panel_blocks/login.html' %}
+      {% endblock %}
+    </div>
+  </div>
+</div>

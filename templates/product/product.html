@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block main %}
+  <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">{% translate 'Товары' %}</h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item">
+              <a href="{% url 'main_page' %}">{% trans 'на главную' %}</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span>{{ product.name }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section">
+      <div class="wrap">
+        <div class="Product">
+          <div class="ProductCard">
+            <div class="ProductCard-look">
+              <div class="ProductCard-photo">
+                {% if product.discount %}
+                  <div class="ProductCard-sale">-{{ product.discount }}%
+                  </div>
+                {% endif %}
+                <img src="{{ product.images.all.0.file.url }}" alt="bigGoods.png"/>
+              </div>
+              <div class="ProductCard-picts">
+                {% for image in product.images.all %}
+                  <a class="ProductCard-pict {% if forloop.counter0 == 0 %} ProductCard-pict_ACTIVE {% endif %}"
+                     href="{{ image.file.url }}">
+                    <img src="{{ image.file.url }}" alt="product_image.png"/>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="ProductCard-desc">
+              <div class="ProductCard-header">
+                <h2 class="ProductCard-title">{{ product.name }}</h2>
+                <div class="ProductCard-info">
+                  <div class="ProductCard-cost">
+                    <div class="ProductCard-price">
+                      {{ product.get_avg_price }}
+                    </div>
+                    {% if product.old_price %}
+                      <div class="ProductCard-priceOld">
+                        {{ product.get_avg_old_price }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="ProductCard-compare">
+                    <a class="btn btn_default" href=" {% url 'add_to_compare' product.id %} ">
+                      <img class="btn-icon" src="{% static 'assets/img/icons/card/change.svg' %}" alt="change.svg"/>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="ProductCard-text">
+                <ul>
+                  {% for feature in product.features %}
+                    <li>{{ feature.description }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <form action="{% url 'cart:random_add' product.id %}" method="post">
+                {% csrf_token %}
+                <div class="ProductCard-cart">
+                  <div class="ProductCard-cartElement ProductCard-cartElement_amount">
+                    <div class="Amount Amount_product">
+                      <button class="Amount-remove" type="button"></button>
+                      {{ form.quantity }}
+                      <button class="Amount-add" type="button"></button>
+                    </div>
+                  </div>
+                  <div class="ProductCard-cartElement">
+                    <button class="btn btn_primary">
+                      <img class="btn-icon" src="{% static 'assets/img/icons/card/cart_white.svg' %}"
+                           alt="cart_white.svg"/>
+                      <span class="btn-content">{% trans 'Добавить в корзину' %}</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <div class="ProductCard-footer">
+                <div class="ProductCard-tags">
+                  <strong class="ProductCard-tagsTitle">{% translate 'Теги' %}:</strong>
+                  {% for tag in product.tags %}
+                    <a href="{% url 'catalog' tag.slug tag.id %}">{{ tag.name }}</a>,
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="Tabs Tabs_default">
+            <div class="Tabs-links">
+              <a class="Tabs-link_ACTIVE Tabs-link" href="#description">
+                <span>{% translate 'Описание' %}</span>
+              </a>
+              <a class="Tabs-link" href="#sellers">
+                <span>{% translate 'Продавцы' %}</span>
+              </a>
+              <a class="Tabs-link" href="#addit">
+                <span>{% translate 'Дополнительная информация' %}</span>
+              </a>
+              <a class="Tabs-link" href="#reviews">
+                <span>{% translate 'Комментарии' %} ({{ product.reviews.all|length }})</span>
+              </a>
+            </div>
+            <div class="Tabs-wrap">
+              <div class="Tabs-block" id="description">
+                <h2>{{ product.name }}</h2>
+                <p>
+                  {{ product.description }}
+                </p>
+                <img class="pict pict_right" src="{{ product.images.0 }}" alt="bigGoods.png"/>
+                <ul>
+                  {% for feature in product.features %}
+                    <li>{{ feature }}</li>
+                  {% endfor %}
+                </ul>
+                <div class="clearfix">
+                </div>
+                <div class="table">
+                  <table>
+                    <tr>
+                      <th>
+                        {% translate 'Характеристика' %}
+                      </th>
+                      <th>
+                        {% translate 'Значение' %}
+                      </th>
+                    </tr>
+                    {% for feature in product.features %}
+                      <tr>
+                        <td>{{ feature.name }}
+                        </td>
+                        <td>{{ feature.description }}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              </div>
+              <div class="Tabs-block" id="sellers">
+                <div class="Categories Categories_product">
+                  {% for seller in product.shop_products.all %}
+                    <div class="Categories-row">
+                      <div class="Categories-block Categories-block_info">
+                        <div class="Categories-info">
+                          <strong>{{ seller.store.name }}</strong>
+                        </div>
+                      </div>
+                      <div class="Categories-splitProps">
+                      </div>
+                      <div class="Categories-block Categories-price">
+                        <strong>{{ seller.price }}</strong>
+                      </div>
+                      <div class="Categories-block Categories-button">
+                        <a class="btn btn_primary" href="{% url 'cart:add' product.id  seller.id %}">
+                          <img class="btn-icon" src="{% static 'assets/img/icons/card/cart_white.svg' %}"
+                               alt="cart_white.svg"/>
+                          <span class="btn-content">{% translate 'Купить' %}</span>
+                        </a>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="Tabs-block" id="addit">
+                {% for property in product.properties %}
+                  <div class="Product-props">
+                    <div class="Product-prop">
+                      <strong>{{ property.name }}</strong>
+                      <span> {{ property.description }}</span>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              </div>
+
+              <div class="Tabs-block" id="reviews">
+
+                <header class="Section-header">
+                  <h3 class="Section-title">{% if product.reviews.all|length > 0 %}
+                    {{ product.reviews.all|length }} {% translate 'Комментарии' %}
+                  {% else %} {% translate 'Пока нет отзывов на данный продукт' %}
+                  {% endif %}
+                  </h3>
+                </header>
+                <div class="Comments">
+
+                  {% for review in reviews %}
+                    <div class="Comment">
+                      <div class="Comment-column Comment-column_pict">
+                        <div class="Comment-avatar">
+                        </div>
+                      </div>
+                      <div class="Comment-column">
+                        <header class="Comment-header">
+                          <div>
+                            <div class="Rating">
+                              <div class="Rating-stars">
+
+                                {% for _ in '12345'|make_list %}
+                                  <span
+                                      class="Rating-star {% if forloop.counter <= review.rating %} Rating-star_view {% endif %}">
+                        {# рейтинг должен быть цифрой от 0 до 5 #}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                          <g>
+                            <g>
+                              <path fill="#ffc000"
+                                    d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                            </g>
+                          </g>
+                        </svg></span>
+                                {% endfor %}
+
+                              </div>
+                              <div class="Rating-title">
+                              </div>
+                            </div>
+                            <strong class="Comment-title">{{ review.user.full_name }}
+                            </strong><span class="Comment-date">{{ review.created_at }}</span>
+                          </div>
+                        </header>
+                        <div class="Comment-content">{{ review.text }}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+                {% if request.user.is_authenticated and not user_review %}
+                  <header class="Section-header Section-header_product">
+                    <h3 class="Section-title">{% trans 'Добавить отзыв' %}</h3>
+                  </header>
+
+                  <div class="Tabs-addComment">
+                    <form class="form" action="{{ product.get_absolute_url }}" method="post">
+                      {% csrf_token %}
+                      <div>
+                        {% for star in '12345'|make_list %}
+                          <input name="rating" type="radio" value="{{ star }}">{{ star }}
+                        {% endfor %}
+                      </div>
+                      <div class="form-group">
+                        <textarea class="form-textarea" maxlength="1000" name="text" id="review"
+                                  placeholder="{% trans 'Текст отзыва' %}"></textarea>
+                      </div>
+
+                      <div class="form-group">
+                        <button class="btn btn_muted" type="submit">{% trans 'Отправить отзыв' %}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                {% elif not request.user.is_authenticated %}
+                  <a href="{ {% url 'users:login' %} }"
+                     class="breadcrumbs-item">{% trans 'Чтобы оставить отзыв, вам нужно авторизоваться' %}</a>
+                {% endif %}
+                {% block review_pagination %}
+                  {% with reviews as page_obj %}
+                    {% include 'inc/blocks/pagination.html' %}
+                  {% endwith %}
+                {% endblock %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

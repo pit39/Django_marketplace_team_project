@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block main %}
+  <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">{% translate 'Личный кабинет' %}</h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item">
+              <a href="{% url 'main_page' %}">{% translate 'Главаная страница' %}</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current">
+              <span>{% translate 'Личный кабинет' %}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section Section_column Section_columnLeft">
+      <div class="wrap">
+        <div class="Section-column">
+          <div class="Section-columnSection">
+            <header class="Section-header">
+              <strong class="Section-title">{% translate 'Навигация' %}</strong>
+            </header>
+            <div class="Section-columnContent">
+              <div class="NavigateProfile">
+                <ul class="menu menu_vt">
+                  <li class="menu-item_ACTIVE menu-item">
+                    <a class="menu-link" href="{% url 'account' %}">{% translate 'Личный кабинет' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'profile' %}">{% translate 'Профиль' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'order_history' %}">{% translate 'История заказов' %}</a>
+                  </li>
+                  <li class="menu-item">
+                    <a class="menu-link" href="{% url 'view_history' %}">{% translate 'История просмотра' %}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="Section-content">
+          <div class="Account">
+            <div class="Account-group">
+              <div class="Account-column">
+                <div class="Account-avatar">
+                  <img src="{{ user.avatar }}" alt="card.jpg"/>
+                </div>
+              </div>
+              <div class="Account-column">
+                <div class="Account-name">
+                  {{ user.name }}
+                </div>
+                <a class="Account-editLink" href="{% url 'profile' %}">{% translate 'Редактировать профиль' %}</a>
+              </div>
+            </div>
+            <div class="Account-group">
+              <div class="Account-column Account-column_full">
+                <div class="Order Order_anons">
+                  <div class="Order-personal">
+                    <div class="row">
+                      <div class="row-block">
+                        <a class="Order-title" href="{% url 'one_order' user.last_order.id %}">
+                          {% translate 'Заказ' %}&#32;<span class="Order-numberOrder">{{ user.last_order.number }}</span>&#32;от&#32;
+                          <span class="Order-dateOrder">{{ user.last_order.date }}</span>
+                        </a>
+                        <div class="Account-editLink">
+                          <a href="{% url 'order_history' %}">{% translate 'История заказов' %}</a>
+                        </div>
+                      </div>
+                      <div class="row-block">
+                        <div class="Order-info Order-info_delivery">
+                          <div class="Order-infoType">
+                            {% translate 'Тип доставки' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ user.last_order.delvery_type }}
+                          </div>
+                        </div>
+                        <div class="Order-info Order-info_pay">
+                          <div class="Order-infoType">
+                            {% translate 'Оплата' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ user.last_order.payment_method }}
+                          </div>
+                        </div>
+                        <div class="Order-info">
+                          <div class="Order-infoType">
+                            {% translate 'Общая стоимость' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ user.last_order.total_price }}
+                          </div>
+                        </div>
+                        <div class="Order-info Order-info_status">
+                          <div class="Order-infoType">
+                            {% translate 'Статус' %}:
+                          </div>
+                          <div class="Order-infoContent">
+                            {{ user.last_order.payment_status }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Account-group">
+              <div class="Account-column Account-column_full">
+                <header class="Section-header">
+                  <h2 class="Section-title">{% translate 'История просмотров' %}</h2>
+                </header>
+                {% if user.view_history %}
+                  <div class="Cards Cards_account">
+                    {% for product in user.view_history %}
+                      <div class="Card
+                        {% if forloop.counter == 2 %}hide_700{% endif %}
+                        {% if forloop.counter == 3 %}hide_md{% endif %} ">
+                        <a class="Card-picture" href="#"><img src="{{ product.image }}" alt="card.jpg"/></a>
+                        <div class="Card-content">
+                          <strong class="Card-title"><a href="#">{{ product.name }}</a></strong>
+                          <div class="Card-description">
+                            <div class="Card-cost">
+                              {% if product.old_price %}
+                                <span class="Card-priceOld">{{ product.old_price }}</span>
+                              {% endif %}
+                              <span class="Card-price">{{ product.price }}</span>
+                            </div>
+                            <div class="Card-category">
+                              {{ product.category }}
+                            </div>
+                            <div class="Card-hover">
+                              <a class="Card-btn" href="{% url 'product' product.slug product.id %}">
+                                <img src="{% static 'assets/img/icons/card/bookmark.svg' %}" alt="bookmark.svg"/>
+                              </a>
+                              <a class="Card-btn" href="{% url 'cart_add' product.id %}">
+                                <img src="{% static 'assets/img/icons/card/cart.svg' %}" alt="cart.svg"/>
+                              </a>
+                              <a class="Card-btn" href="{% url 'compare' product.id %}">
+                                <img src="{% static 'assets/img/icons/card/change.svg' %}" alt="change.svg"/>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {% if product.discount %}
+                          <div class="Card-sale">-{{ product.discount }}%</div>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="Account-editLink Account-editLink_view">
+                    <a href="{% url 'view_history' %}">{% translate 'Перейти на полный список' %}</a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

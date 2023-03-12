@@ -1,0 +1,16 @@
+{% load static %}
+<div class="row-block">
+  <div class="CartBlock">
+    <a class="CartBlock-block" href="{% url 'compare' %}">
+      <img class="CartBlock-img" src="{% static 'assets/img/icons/exchange.svg' %}" alt="exchange.svg"/>
+      <span class="CartBlock-amount">{{ request.session.compare|length }}</span>
+    </a>
+    <a class="CartBlock-block" href="{% url 'cart:cart' %}">
+    <img class="CartBlock-img" src="{% static 'assets/img/icons/cart.svg' %}" alt="cart.svg"/>
+    <span class="CartBlock-amount">{{ cart|length }}</span>
+  </a>
+    <div class="CartBlock-block">
+      <span class="CartBlock-price">{{ cart.get_total_price }}</span>
+    </div>
+  </div>
+</div>

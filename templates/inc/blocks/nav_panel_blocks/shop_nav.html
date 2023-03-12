@@ -1,0 +1,27 @@
+{% load i18n %}
+<nav class="row-block row-block_right Header-menu">
+  <div class="menuModal" id="navigate">
+    <ul class="menu menu_main">
+      <li class="menu-item">
+        <a class="menu-link" href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+      </li>
+      <li class="menu-item">
+        <span class="menu-label menu-label_danger">{% translate 'Новинки' %}</span>
+        <a class="menu-link" href="{% url 'shops' %}">{% translate 'Магазины' %}</a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" href="{% url 'discounts' %}">{% translate 'Скидки' %}</a>
+      </li>
+{#      <li class="menu-item">#}
+{#        <span class="menu-label menu-label_success">{% translate 'горячее' %}</span>#}
+{#        <a class="menu-link" href="product.html">{% translate 'Галлерея' %}</a>#}
+{#      </li>#}
+      <li class="menu-item">
+        <a class="menu-link" href="{% url 'catalog' %}">{% translate 'Продукция' %}</a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" href="{% url 'contacts' %}">{% translate 'Контакты' %}</a>
+      </li>
+    </ul>
+  </div>
+</nav>

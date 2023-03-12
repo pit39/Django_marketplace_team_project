@@ -1,0 +1,78 @@
+{% load static %}
+{% if page_obj.has_other_pages %}
+  <div class="Pagination">
+    <div class="Pagination-ins">
+      {% if page_obj.has_previous %}
+        <a class="Pagination-element Pagination-element_prev"
+           href="?page={{ page_obj.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}
+{% if request.GET.price %}
+&price={{ request.GET.price }}
+{% endif %}
+{% if request.GET.title %}
+&title={{ request.GET.title }}
+{% endif %}
+{% if request.GET.seller %}
+&seller={{ request.GET.seller }}
+{% endif %}
+{% if request.GET.is_exist %}
+&is_exist={{ request.GET.is_exist }}
+{% endif %}">
+          <img src="{% static 'assets/img/icons/prevPagination.svg' %}" alt="prevPagination.svg"/>
+        </a>
+      {% endif %}
+      {% for p in paginator.page_range %}
+        {% if page_obj.number == p %}
+          <a class="Pagination-element Pagination-element_current"
+             href="?page={{ p }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}
+{% if request.GET.price %}
+&price={{ request.GET.price }}
+{% endif %}
+{% if request.GET.title %}
+&title={{ request.GET.title }}
+{% endif %}
+{% if request.GET.seller %}
+&seller={{ request.GET.seller }}
+{% endif %}
+{% if request.GET.is_exist %}
+&is_exist={{ request.GET.is_exist }}
+{% endif %}">
+            <span class="Pagination-text">{{ p }}</span></a>
+        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+          <a class="Pagination-element"
+             href="?page={{ p }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}
+{% if request.GET.price %}
+&price={{ request.GET.price }}
+{% endif %}
+{% if request.GET.title %}
+&title={{ request.GET.title }}
+{% endif %}
+{% if request.GET.seller %}
+&seller={{ request.GET.seller }}
+{% endif %}
+{% if request.GET.is_exist %}
+&is_exist={{ request.GET.is_exist }}
+{% endif %}">
+            <span class="Pagination-text">{{ p }}</span></a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a class="Pagination-element Pagination-element_prev"
+           href="?page={{ page_obj.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}
+{% if request.GET.price %}
+&price={{ request.GET.price }}
+{% endif %}
+{% if request.GET.title %}
+&title={{ request.GET.title }}
+{% endif %}
+{% if request.GET.seller %}
+&seller={{ request.GET.seller }}
+{% endif %}
+{% if request.GET.is_exist %}
+&is_exist={{ request.GET.is_exist }}
+{% endif %}">
+          <img src="{% static 'assets/img/icons/nextPagination.svg' %}" alt="nextPagination.svg"/>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

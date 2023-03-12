@@ -1,0 +1,21 @@
+{% load static %}
+<header class="Header">
+
+  {% block top_nav_panel %}
+    {% include 'inc/blocks/top_nav_panel.html' %}
+  {% endblock %}
+
+  {% block nav_panel %}
+    {% include 'inc/blocks/nav_panel.html' %}
+  {% endblock %}
+
+  {% block menu_search_panel %}
+    {% include 'inc/blocks/menu_search_panel.html' %}
+  {% endblock %}
+
+{% if request.path == '/' %}
+  {% block banner %}
+    {% include 'inc/blocks/banner.html' %}
+  {% endblock %}
+{% endif %}
+</header>

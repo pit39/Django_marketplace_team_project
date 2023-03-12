@@ -1,0 +1,10 @@
+<div class="Card{% if forloop.counter > 18 %} hide_1450 {% endif %}">
+  <a class="Card-picture" href="{# {% url 'category' category.slug category.id %} #}">
+    <img src="{{ category.image.url }}" alt="card.jpg"/>
+  </a>
+  <div class="Card-content">
+    <strong class="Card-title">
+      <a href="{# {% url 'category' category.slug category.id %} #}">{{ category.name }}</a>
+    </strong>
+  </div>
+</div>

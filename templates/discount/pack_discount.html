@@ -1,0 +1,28 @@
+{% extends "discount/base_discount.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block dicount_properties %}
+  <p>{% trans 'Для активации скидки необходимо добавить в корзину товарый из двух групп:' %}</p>
+  {% trans 'первая группа' %}
+  <div class="Cards">
+
+
+    {% with group_number=1 %}
+      {% block group_1 %}
+        {% include 'discount/inc/discount_group.html' %}
+      {% endblock %}
+    {% endwith %}
+  </div>
+  {% trans 'вторая группа' %}
+  <div class="Cards">
+
+    {% with group_number=2 %}
+      {% block group_2 %}
+        {% include 'discount/inc/discount_group.html' %}
+      {% endblock %}
+    {% endwith %}
+
+  </div>
+
+{% endblock %}

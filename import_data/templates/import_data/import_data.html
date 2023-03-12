@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block main %}
+  <div class="container p-5">
+    {% if messages %}
+      {% for message in messages %}
+        {% if forloop.last %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+          {{ message }}
+        </div>
+        {% endif %}
+      {% endfor %}
+
+    {% endif %}
+
+    <table class="table">
+      <thead>
+        <th scope="col">#</th>
+        <th scope="col">{% translate 'Поле' %}</th>
+        <th scope="col">{% translate 'Значение поля' %}</th>
+      </thead>
+      {% for key, value in schema.items %}
+      <tbody>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+      </tbody>
+      {% endfor %}
+    </table>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{% translate 'Образец импортируемых данных' %}</h5>
+        <p class="card-text">
+                {
+          "objects": {
+              "shops": {
+                  "shop_3": {
+                      "name": "shop_3",
+                      "address": "address_shop_3",
+                      "email": "shop_1@mail.com",
+                      "phone": "+31258798845",
+                      "description": "description_shop_3",
+                      "slug": "shop_1"
+                  }
+              },
+              "products": {
+                  "product_1": {
+                      "name": "product_1",
+                      "category": "Electronics",
+                      "description": "description_1",
+                      "properties": [
+                              {
+                                  "property": {
+                                      "name": "property_1"
+                                  },
+                                  "value": "value_1"
+                              },
+                              {
+                                  "property": {
+                                      "name": "property_2"
+                                  },
+                                  "value": "value_2"
+                              }
+                          ]
+                  }
+              }
+          }
+      }
+        </p>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <form class="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for field in form %}
+          {% if field.errors %}
+            <div class="alert alert-danger" role="alert">
+            {% for error in field.errors %}
+              {{ error }}
+            {% endfor %}
+            </div>
+          {% endif %}
+          <label class="form-label" for="{{ field.name }}">{{ field.label }}</label>
+          {{ field }}
+        {% endfor %}
+
+        <div class="mt-3">
+          <button class="btn btn_default btn_primary">{% translate 'импортировать данные' %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}

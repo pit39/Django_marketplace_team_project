@@ -1,0 +1,23 @@
+{% if discount.products.all|length > 0 %}
+  {% for group_elem in discount.discountedpackproduct_set.all %}
+    {% if group_elem.group == group_number %}
+      {% with product=group_elem.product %}
+        {% block product %}
+          {% include 'discount/inc/product_card.html' %}
+        {% endblock %}
+      {% endwith %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if discount.categories.all|length > 0 %}
+  {% for group_elem in discount.discountedpackcategory_set.all %}
+    {% if group_elem.group == group_number %}
+      {% with category=group_elem.category %}
+        {% block category %}
+          {% include 'discount/inc/category_card.html' %}
+        {% endblock %}
+      {% endwith %}
+    {% endif %}
+  {% endfor %}
+{% endif %}

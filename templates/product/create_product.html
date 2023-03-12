@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block main %}
+
+<div class="Middle-top">
+  <div class="wrap">
+    <div class="Middle-header">
+      <h1 class="Middle-title">{% translate 'Создание продукта' %}</h1>
+      <ul class="breadcrumbs Middle-breadcrumbs">
+        <li class="breadcrumbs-item">
+          <a href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+        </li>
+        <li class="breadcrumbs-item breadcrumbs-item_current">
+          <span>{% translate 'Комната продавца' %}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="Section Section_column Section_columnLeft">
+  <div class="wrap">
+    <div class="Section-column">
+      <div class="Section-columnSection sticky">
+        <header class="Section-header">
+          <strong class="Section-title">{% translate 'Меню' %}</strong>
+        </header>
+        <div class="Section-columnContent">
+          <div class="NavigateProfile">
+            <ul class="menu menu_vt">
+              <li class="menu-item">
+                <a class="menu-link" href="{% url 'account' %}">{% translate 'Личный кабинет' %}</a>
+              </li>
+              <li class="menu-item">
+                 <a class="menu-link" href="{% url 'profile' %}">{% translate 'Профиль' %}</a>
+              </li>
+              <li class="menu-item">
+                 <a class="menu-link" href="{% url 'history-order' %}">{% translate 'История заказов' %}</a>
+              </li>
+              <li class="menu-item">
+                 <a class="menu-link" href="{% url 'users:view_history' %}">{% translate 'Просмотренные продукты' %}</a>
+              </li>
+              <li class="menu-item_ACTIVE menu-item">
+                 <a class="menu-link" href="{% url 'seller-room' %}">{% translate 'Комната продавца' %}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="Section-content">
+      <form
+        class="block__create-store-form"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div class="block__create-store-left">
+          <div class="form-group">
+            <label class="form-label" for="id_name">{% translate 'Название продукта' %}</label>
+            <input
+              class="form-input border"
+              id="id_name"
+              required
+              name="name"
+              type="text"
+              placeholder="{% translate 'Введите название' %}"
+            />
+              <span>{{ form.errors.name }}</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="url_product">{% translate 'Слаг' %}</label>
+            <input
+              class="form-input border"
+              id="url_product"
+              required
+              name="slug"
+              type="text"
+              placeholder="{% translate 'Введите слаг' %}"
+            />
+              <span style="font-size: 12px">{{ form.errors.slug }}</span>
+          </div>
+        </div>
+        <div class="block__create-store-right">
+          <div class="form-group">
+            <label class="form-label" for="id_description">{% translate 'Описание' %}</label>
+            <textarea
+              class="border"
+              name="description"
+              cols="25"
+              rows="10"
+              maxlength="255"
+              id="id_description"
+              placeholder="{% translate 'Описание' %}"
+            ></textarea>
+              <span style="font-size: 12px">{{ form.errors.description }}</span>
+          </div>
+            <div class="form-group">
+              <label class="form-label" for="avatar">{% trans 'Категория' %}</label>
+                <select style="width: 90% !important;" class="border size_custom" name="category" required="" id="id_seller">
+                                  <option value="" selected="">---------------------------</option>
+                              {% if categories %}
+                                  {% for category in categories %}
+                                  <option value="{{ category.id }}">{{ category.name }}</option>
+                                  {% endfor %}
+                              {% else %}
+                              <option value="Нет категорий">{% trans 'Нет категорий' %}</option>
+                              {% endif %}
+                </select>
+                <span style="font-size: 12px">{{ form.errors.category }}</span>
+            </div>
+            <div>
+                <label class="form-label" for="id_index">{% trans 'Индекс' %}</label>
+                <input
+                class="form-input border"
+                id="id_index"
+                required
+                name="sort_index"
+                type="number"
+                placeholder="{% translate 'Введите индекс' %}"
+            />
+                <span style="font-size: 12px">{{ form.errors.index }}</span>
+            </div>
+            <div class="form-group">
+                <div class="Profile-btn">
+                    <button class="btn btn_reset" type="reset">{% translate 'Отменить' %}</button>
+                    <button class="btn btn_success" type="submit">{% translate 'Создать' %}</button>
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

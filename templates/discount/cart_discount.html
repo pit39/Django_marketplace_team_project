@@ -1,0 +1,14 @@
+{% extends "discount/base_discount.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block dicount_properties %}
+  {% trans 'Для активации скидки в вашей корзине должно находиться' %}
+  {% if discount.condition == 'amount' %}
+    {% trans 'от' %} {{ discount.condition_min_value }}
+    {% trans 'до' %} {{ discount.condition_max_value }} {% trans 'товаров' %}
+  {% elif discount.condition == 'sum' %}
+    {% trans 'товаров на сумму от' %} {{ discount.condition_min_value }}
+    {% trans 'до' %} {{ discount.condition_max_value }} {% trans 'рублей' %}
+  {% endif %}
+{% endblock %}

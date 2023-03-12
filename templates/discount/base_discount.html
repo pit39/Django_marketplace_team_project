@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block main %}
+  <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">{% trans 'Скидка' %}
+          </h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item"><a href="{% url 'main_page' %}">{% trans 'на главную' %}</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span>{{ discount.title }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section">
+      <div class="wrap">
+        <div class="Product">
+          <div class="ProductCard">
+            <div class="ProductCard-look">
+              <div class="ProductCard-photo">
+                <img src="{{ discount.image.url }}" alt="discount"/>
+              </div>
+            </div>
+            <div class="ProductCard-desc">
+              <div class="ProductCard-header">
+                <h2 class="ProductCard-title">{{ discount.title }}
+                </h2>
+                <div class="ProductCard-info">
+                  <div class="ProductCard-cost">
+                    <div class="ProductCard-price">{% trans 'Сроки действия скидки:' %}
+                      {% if discount.start or discount.end %}
+                        {% if not discount.end %} {% trans 'от' %} {% elif not discount.start %} {% trans 'до' %}
+                        {% endif %}
+                        {% if discount.start %} {{ discount.start| date:'d.m.y' }} {% endif %}
+                        {% if discount.end %} - {{ discount.end| date:'d.m.y' }} {% endif %}
+                      {% else %}
+                        {% trans 'не установлены' %}
+                      {% endif %}
+                    </div>
+                  </div>
+
+                </div>
+                <p>{{ discount.description }}</p>
+                <p>
+                  {% trans 'Механизм действия скидки:' %} {% if discount.type == 'percent' %}
+                  {% trans 'снижение цены на' %} {{ discount.value }}%
+                {% elif discount.type == 'sum' %} {% trans 'Снижение цены на' %} {{ discount.value }}
+                  {% trans 'рублей' %}
+                {% else %} {% trans 'Фиксированная цена:' %} {{ discount.value }} {% trans 'рублей' %}
+                {% endif %}
+                </p>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="Tabs Tabs_default">
+            <div class="Tabs-wrap">
+              <div class="Tabs-block" id="description">
+              <p>{% trans 'Условия применения скидки' %}</p>
+                {% block dicount_properties %}
+                {% endblock %}
+
+                <div class="clearfix">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

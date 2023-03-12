@@ -1,0 +1,20 @@
+{% load static %}
+{% load i18n %}
+<div class="Header-searchLink">
+  <img src="{% static 'assets/img/icons/search.svg' %}" alt="search.svg"/>
+</div>
+<div class="Header-search">
+  <div class="search">
+    <form class="form form_search" action="
+      {% if '/catalog/category/' in request.path %}
+        {% url 'catalog_category' category_slug %}
+      {% else %}
+        {% url 'catalog' %}
+      {% endif %}" method="get">
+      <input class="search-input" id="query" name="query" type="text" placeholder="{% translate 'Что вы ищете' %} ..."/>
+      <button class="search-button" type="submit" id="search">
+        <img src="{% static 'assets/img/icons/search.svg' %}" alt="search.svg"/>{% translate 'Поиск' %}
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block main %}
+<div class="Middle Middle_top">
+  <div class="Middle-top">
+    <div class="wrap">
+      <div class="Middle-header">
+        <h1 class="Middle-title">{% translate 'Название товара' %}</h1>
+        <ul class="breadcrumbs Middle-breadcrumbs">
+          <li class="breadcrumbs-item"><a href="/">{% translate 'Главаня страница' %}</a></li>
+          <li class="breadcrumbs-item breadcrumbs-item_current">
+            <span>{% translate 'Продукт' %}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="Section">
+    <div class="wrap">
+      <div class="Product">
+        <div class="ProductCard">
+          <div class="ProductCard-look">
+            <div class="ProductCard-photo border-custom">
+              <img src="#" alt="product.jpg" />
+            </div>
+          </div>
+          <div class="ProductCard-desc">
+            <div class="ProductCard-header">
+              <h2 class="ProductCard-title">{% translate 'Имя товара' %}</h2>
+              <div class="ProductCard-info">
+                <div class="ProductCard-cost">
+                  <div class="ProductCard-price">{% translate 'Цена' %}</div>
+                </div>
+                <div class="ProductCard-compare">
+                  <a class="btn btn_default" href="#">
+                    <img class="btn-icon" alt="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="ProductCard-text">{% translate 'Описание товара' %}</div>
+            <div class="ProductCard-cart">
+              <form
+                style="
+                  display: flex;
+                  justify-content: space-evenly;
+                  width: 100%;
+                "
+                action="#"
+                method="post"
+              >
+                {% csrf_token %}
+                <div
+                  class="ProductCard-cartElement ProductCard-cartElement_amount"
+                >
+                  <div class="Amount Amount_product">
+                    <button class="Amount-remove" type="button"></button>
+                    <input
+                      class="Amount-input form-input"
+                      name="amount"
+                      type="text"
+                      value="1"
+                    />
+                    <button class="Amount-add" type="button"></button>
+                  </div>
+                </div>
+                <div class="ProductCard-cartElement">
+                  <button type="submit" class="btn btn_primary">
+                    <img
+                      class="btn-icon"
+                      src="/static/assets/img/icons/card/cart_white.svg"
+                      alt=""
+                    /><span class="btn-content">{% translate 'Добавить в корзину' %}</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="ProductCard-footer">
+              <div class="ProductCard-tags">
+                <strong class="ProductCard-tagsTitle">{% translate 'Теги' %}: </strong>
+                <a href="#">{% translate 'Тег' %}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="Tabs Tabs_default">
+          <div class="Tabs-links">
+            <a class="Tabs-link" href="#description"><span>{% translate 'Описание' %}</span></a>
+            <a class="Tabs-link" href="#sellers"><span>{% translate 'Магазины' %}</span></a>
+            <a class="Tabs-link" href="#addit"
+              ><span>{% translate 'Дополнительная информация' %}</span></a
+            >
+            <a class="Tabs-link Tabs-link_ACTIVE" href="#reviews"
+              ><span
+                >{% translate 'Комментарии' %} (<span class="count_reviews">0</span>)</span
+              ></a
+            >
+          </div>
+          <div class="Tabs-wrap">
+            <div class="Tabs-block" id="description" style="display: none">
+              {% translate 'Описание' %}
+              <div class="clearfix"></div>
+              <div class="table">
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>{% translate 'Характеристика' %}</th>
+                      <th>{% translate 'Значение' %}</th>
+                    </tr>
+                    <tr>
+                      <td>{% translate 'Любая Характеристика' %}</td>
+                      <td>{% translate 'Значение этой характеристики' %}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="Tabs-block" id="sellers" style="display: none">
+              <div class="Categories Categories_product">
+                <div class="Categories-row">
+                  <div class="Categories-block Categories-block_info">
+                    <div class="Categories-info">
+                      <a href="#"><strong>{% translate 'Название магазина' %}</strong></a>
+                    </div>
+                  </div>
+                  <div class="Categories-splitProps"></div>
+                  <div class="Categories-block Categories-price">
+                    <span>{% translate 'От меньшей цены к большей' %}</span><strong> $ </strong>
+                  </div>
+                  <div class="Categories-block Categories-button">
+                    <a class="btn btn_primary" href="#}"
+                      ><img
+                        class="btn-icon"
+                        src="/static/assets/img/icons/card/cart_white.svg"
+                        alt=""
+                      /><span class="btn-content">{% translate 'Добавить в корзину' %}</span></a
+                    >
+                  </div>
+                </div>
+                <div class="Categories-row">
+                  <div class="Categories-block Categories-block_info">
+                    <div class="Categories-info">
+                      <a href="#"><strong>{% translate 'Название магазина' %}</strong></a>
+                    </div>
+                  </div>
+                  <div class="Categories-splitProps"></div>
+                  <div class="Categories-block Categories-price">
+                    <span>{% translate 'От меньшей цены к большей' %}</span><strong> $ </strong>
+                  </div>
+                  <div class="Categories-block Categories-button">
+                    <a class="btn btn_primary" href="#}"
+                      ><img
+                        class="btn-icon"
+                        src="/static/assets/img/icons/card/cart_white.svg"
+                        alt=""
+                      /><span class="btn-content">{% translate 'Добавить в корзину' %}</span></a
+                    >
+                  </div>
+                </div>
+                <div class="Categories-row">
+                  <div class="Categories-block Categories-block_info">
+                    <div class="Categories-info">
+                      <a href="#"><strong>{% translate 'Название магазина' %}</strong></a>
+                    </div>
+                  </div>
+                  <div class="Categories-splitProps"></div>
+                  <div class="Categories-block Categories-price">
+                    <span>{% translate 'От меньшей цены к большей' %}</span><strong> $ </strong>
+                  </div>
+                  <div class="Categories-block Categories-button">
+                    <a class="btn btn_primary" href="#}"
+                      ><img
+                        class="btn-icon"
+                        src="/static/assets/img/icons/card/cart_white.svg"
+                        alt=""
+                      /><span class="btn-content">{% translate 'Добавить в корзину' %}</span></a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Tabs-block" id="addit" style="display: none">
+              <div class="Product-props">
+                <div class="Product-prop">{% translate 'БЛОК' %}</div>
+              </div>
+            </div>
+            <div class="Tabs-block" id="reviews">
+              <header class="Section-header">
+                <h3 class="Section-title">
+                  <span class="count_reviews">0</span>{% translate 'Комментариев' %}
+                </h3>
+              </header>
+              <form class="form" name="page-filter" action="#" method="get">
+                <div class="Comments comments-js">
+                  <div id="comments" class="Comments">
+                    <input type="hidden" name="slug" value="" />
+                    <div class="Comment">
+                      <div class="Comment-column Comment-column_pict">
+                        <div
+                          class="Comment-avatar"
+                          style="
+                            background-image: url();
+                            background-size: cover;
+                          "
+                        ></div>
+                      </div>
+                      <div class="Comment-column">
+                        <header class="Comment-header">
+                          <div>
+                            <strong class="Comment-title">{% translate 'Автор' %} </strong
+                            ><span class="Comment-date">{% translate 'Время' %}</span>
+                          </div>
+                        </header>
+                        <div class="Comment-content">{% translate 'Свой комментарий' %}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <header class="Section-header Section-header_product">
+                <h3 class="Section-title">{% translate 'Добавить комментарий' %}</h3>
+              </header>
+              <div class="Tabs-addCommentreview-form">
+                <form class="form" id="comment-form" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="user" value="" />
+                  <input type="hidden" name="product" value="" />
+                  <input id="id_slug_post" type="hidden" name="slug" value="" />
+                  <div class="form-group">
+                    <textarea
+                      class="form-textarea border-custom"
+                      name="content"
+                      id="content"
+                      required
+                      placeholder="{% translate 'Комментарий' %}"
+                      style="width: 1143px; height: 117px"
+                    ></textarea>
+                  </div>
+                  <div class="form-group">
+                    <div class="row" style="margin-left: 0">
+                      <div class="row-block">
+                        <input
+                          class="form-input border-custom"
+                          id="author"
+                          name="author"
+                          type="text"
+                          placeholder="{% translate 'Имя' %}"
+                          required
+                        />
+                      </div>
+                      <div class="row-block">
+                        <input
+                          class="form-input border-custom"
+                          id="email"
+                          name="email"
+                          type="text"
+                          value=""
+                          placeholder="{% translate 'Почта' %}"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group custom_register_name-block">
+                    <button class="btn btn_muted" type="submit">
+                      {% translate 'Подтвердить' %}
+                    </button>
+                    <div class="input-rating">
+                      <span>{% translate 'Рейтинг' %}: </span>
+                      <div class="rating">
+                        <input
+                          id="star5"
+                          name="rating"
+                          value="5"
+                          type="radio"
+                        /><label for="star5">☆</label>
+                        <input
+                          id="star4"
+                          name="rating"
+                          value="4"
+                          type="radio"
+                        /><label for="star4">☆</label>
+                        <input
+                          id="star3"
+                          name="rating"
+                          value="3"
+                          type="radio"
+                        /><label for="star3">☆</label>
+                        <input
+                          id="star2"
+                          name="rating"
+                          value="2"
+                          type="radio"
+                        /><label for="star2">☆</label>
+                        <input
+                          id="star1"
+                          name="rating"
+                          value="1"
+                          type="radio"
+                        /><label for="star1">☆</label>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div>
+                  {% translate 'Пожалуйста' %}
+                  <a href="№">{% translate 'войдите' %}</a>
+                  {% translate 'или' %}
+                  <a href="#"> {% translate 'зарегистрируйтесь' %}.</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

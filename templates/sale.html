@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block main %}
+
+
+ <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">{% translate 'Товары в продаже' %}</h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item">
+              <a href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current">
+              <span>{% translate 'Распродажа' %}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section">
+      <div class="wrap">
+        {% if sale %}
+        <div class="Cards Cards_blog">
+          {% for product in sale %}
+          <div class="Card">
+            <a class="Card-picture" href="#">
+              <img src="{{ product.image }}" alt="product.png"/>
+            </a>
+            <div class="Card-date">
+              <strong class="Card-date-number">{% if product.sale.start_date %} {{ product.sale.start_date.date }}
+              {% else %} {{ product.sale.end_date.date }} {% endif %}
+              </strong><span class="Card-date-month">{% if product.sale.start_date %} {{ product.sale.start_date.month }}
+            {% else %} {{ product.sale.end_date.month }} {% endif %}</span>
+            </div>
+          {% if product.sale.start_date %}
+            <div class="Card-date Card-date_to">
+              <strong class="Card-date-number">{{ product.sale.end_date.date }}</strong>
+              <span class="Card-date-month">{{ product.sale.end_date.month }}</span>
+            </div>
+          {% endif %}
+            <div class="Card-pin">
+            </div>
+            <div class="Card-content">
+              <strong class="Card-title">
+                <a href="#">{{ product.name }}</a>
+              </strong>
+              <div class="Card-description">
+                {{ product.description }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="Pagination">
+    <div class="Pagination-ins">
+      <a class="Pagination-element Pagination-element_prev" href="#">
+        <img src="{% static 'assets/img/icons/prevPagination.svg' %}" alt="prevPagination.svg"/>
+      </a>
+      <a class="Pagination-element Pagination-element_current" href="#"><span class="Pagination-text">1</span></a>
+      <a class="Pagination-element" href="#"><span class="Pagination-text">2</span></a>
+      <a class="Pagination-element" href="#"><span class="Pagination-text">3</span></a>
+      <a class="Pagination-element Pagination-element_prev" href="#">
+        <img src="{% static 'assets/img/icons/nextPagination.svg' %}" alt="nextPagination.svg"/>
+      </a>
+    </div>
+  </div>
+
+{% endblock %}

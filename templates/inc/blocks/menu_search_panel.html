@@ -1,0 +1,15 @@
+{% load static %}
+{% load mptt_tags %}
+<div class="Header-searchWrap">
+  <div class="wrap">
+
+    {% block menu_category %}
+      {% include 'inc/blocks/menu_search_panel_blocks/menu_category.html' %}
+    {% endblock %}
+
+    {% block search_panel %}
+      {% include 'inc/blocks/menu_search_panel_blocks/search_panel.html' %}
+    {% endblock %}
+
+  </div>
+</div>

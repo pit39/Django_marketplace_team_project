@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block main%}
+<div class="Middle Middle_top">
+  <div class="Middle-top">
+    <div class="wrap">
+      <div class="Middle-header">
+        <h1 class="Middle-title">{% translate 'Личный кабинет' %}</h1>
+        <ul class="breadcrumbs Middle-breadcrumbs">
+          <li class="breadcrumbs-item">
+            <a href="{% url 'main_page' %}">{% translate 'Главная страница' %}</a>
+          </li>
+          <li class="breadcrumbs-item breadcrumbs-item_current">
+            <span>{% translate 'Личный кабинет' %}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="Section Section_column Section_columnLeft">
+    <div class="wrap">
+      <div class="Section-column">
+        <div class="Section-columnSection">
+          <header class="Section-header">
+            <strong class="Section-title">{% translate 'Меню' %}</strong>
+          </header>
+          <div class="Section-columnContent sticky">
+            <div class="NavigateProfile">
+              <ul class="menu menu_vt">
+                <li class="menu-item_ACTIVE menu-item">
+                  <a class="menu-link" href="{% url 'account' %}">{% translate 'Личный кабинет' %}</a>
+                </li>
+                <li class="menu-item">
+                  <a class="menu-link" href="{% url 'profile' %}">{% translate 'Профиль' %}</a>
+                </li>
+                <li class="menu-item">
+                  <a class="menu-link" href="{% url 'history-order' %}">{% translate 'История заказов' %}</a>
+                </li>
+                <li class="menu-item">
+                  <a class="menu-link" href="{% url 'users:view_history' %}">{% translate 'Просмотренные продукты' %}</a>
+                </li>
+                  <li class="menu-item menu-item">
+                      <a class="menu-link" href="{% url 'seller-room' %}">{% translate 'Комната продавца' %}</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="Section-content">
+        <header class="Section-header margin">
+          <h2 class="Section-title">{% translate 'Ваш профиль' %}</h2>
+        </header>
+        <div class="Account">
+          <div class="Account-group">
+              <div> <img style="width: 250px;
+                                border-radius: 5px;
+                                border: 1px solid black;
+                                padding: 3px;
+                                background-color: whitesmoke;
+                                margin-right: 10px"
+                         src="
+                                {% if request.user.avatar %}
+                                {{ request.user.avatar.url }}
+                                {% else %}
+                                http://www.rosphoto.com/images/u/articles/1510/7_5.jpg
+                                {% endif %}">
+              </div>
+            <div class="Account-column">
+            {% if request.user.full_name %}
+              <div class="Account-name">{{ request.user.full_name }}</div>
+            {% else %}
+              <div class="Account-name">{{ request.user.email }}</div>
+            {% endif %}
+            <a class="Account-editLink" href="{% url 'profile' %}">{% translate 'Изменить профиль' %}</a>
+            </div>
+          </div>
+          <div class="Account-group">
+            <div class="Account-column Account-column_full">
+              <header class="Section-header">
+                <h2 class="Section-title">{% translate 'История заказов' %}</h2>
+              </header>
+              <div class="Cards Cards_account" style="position: relative">
+                  {% if last_order.order_in %}
+                <a type="button" class="btn__show-history" href="#">{% translate 'Посмотреть последний заказ' %}</a>
+                <div class="Orders historyOrder">
+                  <div class="Order Order_anons">
+                    <div class="Order-personal">
+                      <div class="row">
+                        <div class="row-block">
+                          <a class="Order-title" href="{{ last_order.get_absolute_url }}">
+                              Заказ&#32;<span class="Order-numberOrder">{{ last_order.id }}</span>
+                              &#32;от&#32;<span class="Order-dateOrder">{{ last_order.ordered }}</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <a type="button" class="btn__close">{% translate 'свернуть' %}</a>
+                  </div>
+                </div>
+                  {% else %}
+                  <h2>{% translate 'Вы ещё ничего не заказывали' %}</h2>
+                  {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="Account-group">
+              <div class="Account-column Account-column_full">
+                <header class="Section-header">
+                  <h2 class="Section-title">{% translate 'История просмотров' %}</h2>
+                </header>
+                {% if user.viewshistorys %}
+                  <div class="Cards Cards_account">
+                    {% for product in user.viewshistorys %}
+                      <div class="Card
+                        {% if forloop.counter == 2 %}hide_700{% endif %}
+                        {% if forloop.counter == 3 %}hide_md{% endif %} ">
+                        <a class="Card-picture" href="#"><img src="{{ product.image }}" alt="card.jpg"/></a>
+                        <div class="Card-content">
+                          <strong class="Card-title"><a href="#">{{ product.name }}</a></strong>
+                          <div class="Card-description">
+                            <div class="Card-cost">
+                              {% if product.old_price %}
+                                <span class="Card-priceOld">{{ product.old_price }}</span>
+                              {% endif %}
+                              <span class="Card-price">{{ product.price }}</span>
+                            </div>
+                            <div class="Card-category">{{ product.category }}
+                            </div>
+                            <div class="Card-hover">
+                              <a class="Card-btn" href="{% url 'product' product.slug %}">
+                                <img src="{% static 'assets/img/icons/card/bookmark.svg' %}" alt="bookmark.svg"/>
+                              </a>
+                              <a class="Card-btn" href="{% url 'cart_add' product.id %}">
+                                <img src="{% static 'assets/img/icons/card/cart.svg' %}" alt="cart.svg"/>
+                              </a>
+                              <a class="Card-btn" href="{% url 'compare' product.id %}">
+                                <img src="{% static 'assets/img/icons/card/change.svg' %}" alt="change.svg"/>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {% if product.discount %}
+                          <div class="Card-sale">-{{ product.discount }}%</div>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="Account-editLink Account-editLink_view">
+                    <a href="{% url 'users:view_history' %}">{% translate 'Перейти на полный список' %}</a>
+                  </div>
+                {% else %}
+                    <h2 style="text-align: center">{% translate 'Ваша история просмотров пока пуста' %}</h2>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "discount/base_discount.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block dicount_properties %}
+  <p>{% trans 'Скидка распространяется на следующие товары:' %}</p>
+  {% if discount.products.all|length > 0 %}
+    {% trans 'продукты на скидке' %}
+    <div class="Cards">
+      {% for product in discount.products.all %}
+
+        {% block product %}
+          {% include 'discount/inc/product_card.html' %}
+        {% endblock %}
+
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if discount.categories.all|length > 0 %}
+    {% trans 'категории на скидке' %}
+    <div class="Cards">
+      {% for category in discount.categories.all %}
+
+        {% block category %}
+          {% include 'discount/inc/category_card.html' %}
+        {% endblock %}
+
+      {% endfor %}
+    </div>
+
+  {% endif %}
+{% endblock %}
